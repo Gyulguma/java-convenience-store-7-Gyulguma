@@ -7,7 +7,7 @@ public class Promotions {
     private final List<Promotion> promotions;
 
     public Promotions(List<Promotion> promotions) {
-        this.promotions = new ArrayList<Promotion>();
+        this.promotions = new ArrayList<>(promotions);
     }
 
     public Promotion findPromotionByName(String name) {

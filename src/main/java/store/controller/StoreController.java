@@ -26,6 +26,7 @@ public class StoreController {
         try {
             Promotions promotions = this.fileService.getPromotions(PROMOTIONS_FILE_PATH);
             List<Product> products = this.fileService.getProducts(PRODUCTS_FILE_PATH, promotions);
+            this.outputView.printProducts(products);
         } catch (FileNotFoundException | IllegalArgumentException e) {
             this.outputView.printExceptionMessage(e.getMessage());
         }
