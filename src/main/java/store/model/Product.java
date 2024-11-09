@@ -40,4 +40,12 @@ public class Product {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
         return numberFormat.format(price) + PRICE_UNIT;
     }
+
+    public boolean matchName(String name) {
+        return this.name.equals(name);
+    }
+
+    public boolean canBuy(int quantity) {
+        return this.quantity >= quantity;
+    }
 }

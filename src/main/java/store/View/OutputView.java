@@ -1,7 +1,6 @@
 package store.View;
 
-import java.util.List;
-import store.model.Product;
+import store.model.Products;
 
 public class OutputView {
     private static final String WELCOME_MESSAGE = "안녕하세요. W편의점입니다.";
@@ -11,16 +10,10 @@ public class OutputView {
         System.out.println(message);
     }
 
-    public void printProducts(List<Product> products) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(WELCOME_MESSAGE);
-        stringBuilder.append("\n");
-        stringBuilder.append(PRODUCT_INTRODUCE_MESSAGE);
-        stringBuilder.append("\n\n");
-        for (Product product : products) {
-            stringBuilder.append(product.toString());
-            stringBuilder.append("\n");
-        }
+    public void printProducts(Products products) {
+        String stringBuilder = WELCOME_MESSAGE + "\n"
+                + PRODUCT_INTRODUCE_MESSAGE + "\n\n"
+                + products.toString();
         System.out.println(stringBuilder);
     }
 }

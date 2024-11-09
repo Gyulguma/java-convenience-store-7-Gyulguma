@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import store.model.Product;
+import store.model.Products;
 import store.model.Promotion;
 import store.model.Promotions;
 import store.util.Converter;
@@ -14,9 +15,9 @@ public class FileService {
     private final FileReader fileReader;
     private final Converter converter;
 
-    public FileService() {
+    public FileService(Converter converter) {
         this.fileReader = new FileReader();
-        this.converter = new Converter();
+        this.converter = converter;
     }
 
     public Promotions getPromotions(String filePath) throws FileNotFoundException {
@@ -40,7 +41,7 @@ public class FileService {
         return new Promotion(promotionName, buy, get, startDate, endDate);
     }
 
-    public List<Product> getProducts(String filePath, Promotions promotions) throws FileNotFoundException {
+    public Products getProducts(String filePath, Promotions promotions) throws FileNotFoundException {
         List<String> fileLines = fileReader.readFile(filePath);
         List<Product> products = new ArrayList<>();
         for (int i = 1; i < fileLines.size(); i++) {
@@ -49,7 +50,7 @@ public class FileService {
             Product product = createProduct(productLine, promotions);
             products.add(product);
         }
-        return products;
+        return new Products(products);
     }
 
     private Product createProduct(String[] productLine, Promotions promotions) {
