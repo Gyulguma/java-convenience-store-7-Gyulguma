@@ -10,6 +10,7 @@ import store.model.PromotionApplyStatus;
 import store.model.Promotions;
 import store.model.Receipt;
 import store.service.FileService;
+import store.service.ItemService;
 import store.service.StoreService;
 
 public class StoreController {
@@ -19,13 +20,15 @@ public class StoreController {
     private final InputView inputView;
     private final OutputView outputView;
     private final FileService fileService;
+    private final ItemService itemService;
     private final StoreService storeService;
 
     public StoreController(InputView inputView, OutputView outputView, FileService fileService,
-                           StoreService storeService) {
+                           ItemService itemService, StoreService storeService) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.fileService = fileService;
+        this.itemService = itemService;
         this.storeService = storeService;
     }
 
@@ -71,7 +74,7 @@ public class StoreController {
         while (true) {
             try {
                 String input = this.inputView.readItem();
-                return this.storeService.getItems(products, input);
+                return this.itemService.getItems(products, input);
             } catch (IllegalArgumentException e) {
                 this.outputView.printExceptionMessage(e.getMessage());
             }
