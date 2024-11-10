@@ -111,8 +111,9 @@ public class StoreService {
             product.decreaseQuantity(quantity);
             return 0;
         }
+        int remainingQuantity = quantity - product.getQuantity();
         product.decreaseQuantity(product.getQuantity());
-        return quantity - product.getQuantity();
+        return remainingQuantity;
     }
 
     public boolean isContinue(String input) {
