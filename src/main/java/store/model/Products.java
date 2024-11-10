@@ -67,4 +67,13 @@ public class Products {
         }
         return null;
     }
+
+    public Product findProductByName(String name) {
+        for (Product product : products) {
+            if (product.matchName(name)) {
+                return product;
+            }
+        }
+        return null;
+    }
 }

@@ -8,6 +8,7 @@ import store.model.Item;
 import store.model.Products;
 import store.model.PromotionStatus;
 import store.model.Promotions;
+import store.model.Receipt;
 import store.service.FileService;
 import store.service.StoreService;
 
@@ -31,8 +32,9 @@ public class StoreController {
     public void run() {
         Products products = printProducts();
         List<Item> items = createItem(products);
-        List<Item> processItems = processItemsByPromotion(products, items);
-        int discountByMembership = applyMembership(products, processItems);
+        List<Item> processedItems = processItemsByPromotion(products, items);
+        boolean applyMembership = applyMembership();
+        Receipt receipt = createReceipt(products, processedItems, applyMembership);
     }
 
     private Products printProducts() {
@@ -72,11 +74,12 @@ public class StoreController {
         return items;
     }
 
-    private int applyMembership(Products products, List<Item> items) {
+    private boolean applyMembership() {
         String input = this.inputView.readMembershipYN();
-        if (input.equals("Y")) {
-            return this.storeService.getMembershipDiscount(products, items);
-        }
-        return 0;
+        return input.equals("Y");
+    }
+
+    private Receipt createReceipt(Products products, List<Item> items, boolean applyMembership) {
+        return this.storeService.createReceipt(products, items, applyMembership);
     }
 }
