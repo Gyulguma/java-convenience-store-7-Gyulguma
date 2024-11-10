@@ -57,4 +57,14 @@ public class Products {
         }
         return null;
     }
+
+    public Product findProductByNameAndPromotionIsNull(String name) {
+        Products foundProducts = findAllProductByName(name);
+        for (Product product : foundProducts.products) {
+            if (!product.isPromotion()) {
+                return product;
+            }
+        }
+        return null;
+    }
 }

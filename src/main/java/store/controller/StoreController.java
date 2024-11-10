@@ -32,8 +32,8 @@ public class StoreController {
         Products products = printProducts();
         List<Item> items = createItem(products);
         List<Item> processItems = processItemsByPromotion(products, items);
+        int discountByMembership = applyMembership(products, processItems);
     }
-
 
     private Products printProducts() {
         Promotions promotions = null;
@@ -70,5 +70,13 @@ public class StoreController {
             this.storeService.processItemByPromotion(item, promotionStatus, input, products);
         }
         return items;
+    }
+
+    private int applyMembership(Products products, List<Item> items) {
+        String input = this.inputView.readMembershipYN();
+        if (input.equals("Y")) {
+            return this.storeService.getMembershipDiscount(products, items);
+        }
+        return 0;
     }
 }

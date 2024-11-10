@@ -103,4 +103,28 @@ public class StoreService {
         int notApplyPromotionCount = item.getQuantity() - applyPromotion;
         item.takeOffQuantity(notApplyPromotionCount);
     }
+
+    public int getMembershipDiscount(Products products, List<Item> items) {
+        int totalPriceNotApplyPromotion = 0;
+        for (Item item : items) {
+            totalPriceNotApplyPromotion += getPriceNotApplyPromotion(products, item);
+        }
+        int discount = (int) (totalPriceNotApplyPromotion * 0.3);
+        if (discount > 8000) {
+            discount = 8000;
+        }
+        return discount;
+    }
+
+    private int getPriceNotApplyPromotion(Products products, Item item) {
+        Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
+        if (product == null) {
+            product = products.findProductByNameAndPromotionIsNull(item.getName());
+            return item.getQuantity() * product.getPrice();
+        }
+        int price = product.getPrice();
+        int applyPromotion = product.getMaxCanApplyPromotion(item.getQuantity());
+        int notApplyPromotionCount = item.getQuantity() - applyPromotion;
+        return notApplyPromotionCount * price;
+    }
 }

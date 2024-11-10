@@ -46,6 +46,10 @@ public class Product {
         return this.name.equals(name);
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public int getQuantity() {
         return quantity;
     }
