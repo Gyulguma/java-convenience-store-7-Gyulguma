@@ -6,6 +6,7 @@ import store.View.InputView;
 import store.View.OutputView;
 import store.model.Item;
 import store.model.Products;
+import store.model.PromotionStatus;
 import store.model.Promotions;
 import store.service.FileService;
 import store.service.StoreService;
@@ -30,7 +31,9 @@ public class StoreController {
     public void run() {
         Products products = printProducts();
         List<Item> items = createItem(products);
+        List<Item> processItems = processItemsByPromotion(products, items);
     }
+
 
     private Products printProducts() {
         Promotions promotions = null;
@@ -54,5 +57,18 @@ public class StoreController {
                 this.outputView.printExceptionMessage(e.getMessage());
             }
         }
+    }
+
+    private List<Item> processItemsByPromotion(Products products, List<Item> items) {
+        for (Item item : items) {
+            PromotionStatus promotionStatus = this.storeService.checkPromotionState(products, item);
+            if (promotionStatus == PromotionStatus.NO_PROMOTION) {
+                continue;
+            }
+            String promotionsMessage = this.storeService.getPromotionMessage(products, item, promotionStatus);
+            String input = this.inputView.readYN(promotionsMessage);
+            this.storeService.processItemByPromotion(item, promotionStatus, input, products);
+        }
+        return items;
     }
 }

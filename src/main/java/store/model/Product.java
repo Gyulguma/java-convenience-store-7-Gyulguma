@@ -1,6 +1,7 @@
 package store.model;
 
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 public class Product {
@@ -45,7 +46,64 @@ public class Product {
         return this.name.equals(name);
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public boolean isPromotion() {
+        return promotion != null;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public boolean isApplyPromotion(LocalDateTime localDateTime) {
+        if (promotion == null) {
+            return false;
+        }
+        return promotion.isApplyPromotion(localDateTime);
+    }
+
     public boolean canBuy(int quantity) {
         return this.quantity >= quantity;
+    }
+
+    public boolean canGetForFreeByPromotion(int quantity) {
+        if (promotion == null) {
+            return false;
+        }
+        return this.promotion.canGetForFree(quantity) && this.quantity - quantity >= this.promotion.getGet();
+    }
+
+    public int getMaxCanGetForFreeByPromotion(int quantity) {
+        if (promotion == null) {
+            return 0;
+        }
+        if (quantity > this.quantity) {
+            quantity = this.quantity;
+        }
+        return this.promotion.getMaxCanGetForFree(quantity);
+    }
+
+    public int getPromotionGet() {
+        if (promotion == null) {
+            return 0;
+        }
+        return this.promotion.getGet();
+    }
+
+    public int getMaxCanApplyPromotion(int quantity) {
+        if (promotion == null) {
+            return 0;
+        }
+        if (quantity > this.quantity) {
+            quantity = this.quantity;
+        }
+        return this.promotion.getMaxCanApply(quantity);
+    }
+
+    public boolean InStock() {
+        return quantity > 0;
     }
 }

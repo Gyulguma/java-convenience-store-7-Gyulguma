@@ -20,13 +20,14 @@ public class Products {
         return stringBuilder.toString();
     }
 
-    public Product findProductByName(String name) {
+    public Products findAllProductByName(String name) {
+        List<Product> foundProducts = new ArrayList<>();
         for (Product product : products) {
             if (product.matchName(name)) {
-                return product;
+                foundProducts.add(product);
             }
         }
-        return null;
+        return new Products(foundProducts);
     }
 
     public boolean existProductByName(String name) {
@@ -36,5 +37,24 @@ public class Products {
             }
         }
         return false;
+    }
+
+    public boolean canBuy(String name, int quantity) {
+        Products foundProducts = findAllProductByName(name);
+        int totalStock = 0;
+        for (Product product : foundProducts.products) {
+            totalStock += product.getQuantity();
+        }
+        return totalStock >= quantity;
+    }
+
+    public Product findProductByNameAndPromotionIsNotNull(String name) {
+        Products foundProducts = findAllProductByName(name);
+        for (Product product : foundProducts.products) {
+            if (product.isPromotion()) {
+                return product;
+            }
+        }
+        return null;
     }
 }

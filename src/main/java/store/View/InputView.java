@@ -19,4 +19,23 @@ public class InputView {
             throw new IllegalArgumentException(ERROR_INPUT_FORMAT);
         }
     }
+
+    public String readYN(String promotionsMessage) {
+        while (true) {
+            try {
+                System.out.println(promotionsMessage);
+                String input = Console.readLine();
+                validateYNInput(input);
+                return input;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void validateYNInput(String input) {
+        if (!input.equals("Y") && !input.equals("N")) {
+            throw new IllegalArgumentException(ERROR_INPUT_FORMAT);
+        }
+    }
 }

@@ -16,4 +16,12 @@ public class Item {
     public int getQuantity() {
         return quantity;
     }
+
+    public void addQuantity(int amount) {
+        this.quantity += amount;
+    }
+
+    public void takeOffQuantity(int amount) {
+        this.quantity -= amount;
+    }
 }
