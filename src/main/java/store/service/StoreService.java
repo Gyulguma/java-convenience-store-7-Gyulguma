@@ -140,7 +140,7 @@ public class StoreService {
 
     private int getPriceForFreeByPromotion(Products products, Item item) {
         Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
-        if (product == null) {
+        if (product == null || !product.isApplyPromotion(DateTimes.now())) {
             return 0;
         }
         int price = product.getPrice();
@@ -162,7 +162,7 @@ public class StoreService {
 
     private int getPriceNotApplyPromotion(Products products, Item item) {
         Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
-        if (product == null) {
+        if (product == null || !product.isApplyPromotion(DateTimes.now())) {
             product = products.findProductByNameAndPromotionIsNull(item.getName());
             return item.getQuantity() * product.getPrice();
         }
@@ -176,7 +176,7 @@ public class StoreService {
         List<Item> freeItems = new ArrayList<>();
         for (Item item : items) {
             Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
-            if (product == null) {
+            if (product == null || !product.isApplyPromotion(DateTimes.now())) {
                 continue;
             }
             int get = product.getMaxCanGetForFreeByPromotion(item.getQuantity());
