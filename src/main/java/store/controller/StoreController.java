@@ -11,24 +11,27 @@ import store.model.Promotions;
 import store.model.Receipt;
 import store.service.FileService;
 import store.service.ItemService;
+import store.service.ReceiptService;
 import store.service.StoreService;
 
 public class StoreController {
-    private static final String PRODUCTS_FILE_PATH = "/prodsucts.md";
+    private static final String PRODUCTS_FILE_PATH = "/products.md";
     private static final String PROMOTIONS_FILE_PATH = "/promotions.md";
 
     private final InputView inputView;
     private final OutputView outputView;
     private final FileService fileService;
     private final ItemService itemService;
+    private final ReceiptService receiptService;
     private final StoreService storeService;
 
     public StoreController(InputView inputView, OutputView outputView, FileService fileService,
-                           ItemService itemService, StoreService storeService) {
+                           ItemService itemService, ReceiptService receiptService, StoreService storeService) {
         this.inputView = inputView;
         this.outputView = outputView;
         this.fileService = fileService;
         this.itemService = itemService;
+        this.receiptService = receiptService;
         this.storeService = storeService;
     }
 
@@ -100,7 +103,7 @@ public class StoreController {
     }
 
     private Receipt createReceipt(Products products, List<Item> items, boolean applyMembership) {
-        return this.storeService.createReceipt(products, items, applyMembership);
+        return this.receiptService.createReceipt(products, items, applyMembership);
     }
 
     private void printReceipt(Products products, Receipt receipt) {

@@ -5,6 +5,7 @@ import store.View.OutputView;
 import store.controller.StoreController;
 import store.service.FileService;
 import store.service.ItemService;
+import store.service.ReceiptService;
 import store.service.StoreService;
 import store.util.Converter;
 
@@ -17,8 +18,10 @@ public class Application {
         OutputView outputView = new OutputView();
         FileService fileService = new FileService(converter);
         ItemService itemService = new ItemService(converter);
+        ReceiptService receiptService = new ReceiptService();
         StoreService storeService = new StoreService();
-        this.storeController = new StoreController(inputView, outputView, fileService, itemService, storeService);
+        this.storeController = new StoreController(inputView, outputView, fileService, itemService, receiptService,
+                storeService);
     }
 
     public static void main(String[] args) {
