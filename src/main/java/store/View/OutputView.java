@@ -61,16 +61,17 @@ public class OutputView {
         String message = ViewConstants.RECEIPT_BOTTOM
                 + String.format(ViewConstants.RECEIPT_FORMAT, ViewConstants.RECEIPT_TOTAL_PRICE, totalQuantity,
                 formatCurrency(receipt.getTotalPrice())) + "\n"
-                + String.format("%-10s %20s\n", ViewConstants.RECEIPT_PROMOTION_DISCOUNT,
-                formatCurrency(-receipt.getDiscountByPromotion()))
-                + String.format("%-10s %20s\n", ViewConstants.RECEIPT_MEMBERSHIP_DISCOUNT,
-                formatCurrency(-receipt.getDiscountByMembership()))
-                + String.format("%-10s %20s\n", ViewConstants.RECEIPT_PAYMENT, formatCurrency(receipt.getPayment()));
+                + String.format(ViewConstants.RECEIPT_BOTTOM_FORMAT, ViewConstants.RECEIPT_PROMOTION_DISCOUNT,
+                "-" + formatCurrency(receipt.getDiscountByPromotion()))
+                + String.format(ViewConstants.RECEIPT_BOTTOM_FORMAT, ViewConstants.RECEIPT_MEMBERSHIP_DISCOUNT,
+                "-" + formatCurrency(receipt.getDiscountByMembership()))
+                + String.format(ViewConstants.RECEIPT_BOTTOM_FORMAT, ViewConstants.RECEIPT_PAYMENT,
+                formatCurrency(receipt.getPayment()));
         System.out.println(message);
     }
 
     private String formatCurrency(int price) {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
-        return numberFormat.format(price) + ViewConstants.PRICE_UNIT;
+        return numberFormat.format(price);
     }
 }
