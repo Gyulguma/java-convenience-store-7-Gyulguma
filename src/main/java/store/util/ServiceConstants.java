@@ -1,6 +1,6 @@
 package store.util;
 
-public class Constants {
+public class ServiceConstants {
     // component
     public static final String ITEM_GROUP_INDICATOR_START = "[";
     public static final String ITEM_GROUP_INDICATOR_END = "]";

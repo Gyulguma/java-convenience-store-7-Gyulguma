@@ -8,8 +8,8 @@ import store.model.Product;
 import store.model.Products;
 import store.model.PromotionStatus;
 import store.model.Receipt;
-import store.util.Constants;
 import store.util.Converter;
+import store.util.ServiceConstants;
 
 public class StoreService {
     private final Converter converter;
@@ -19,7 +19,7 @@ public class StoreService {
     }
 
     public List<Item> getItems(Products products, String input) {
-        String[] inputs = input.split(Constants.ITEM_GROUP_SEPARATOR);
+        String[] inputs = input.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
         List<Item> items = new ArrayList<>();
         for (String item : inputs) {
             items.add(createItem(products, item));
@@ -37,20 +37,20 @@ public class StoreService {
     }
 
     private String[] parseItemElements(String item) {
-        item = item.replace(Constants.ITEM_GROUP_INDICATOR_START, "");
-        item = item.replace(Constants.ITEM_GROUP_INDICATOR_END, "");
-        return item.split(Constants.ITEM_ELEMENT_SEPARATOR);
+        item = item.replace(ServiceConstants.ITEM_GROUP_INDICATOR_START, "");
+        item = item.replace(ServiceConstants.ITEM_GROUP_INDICATOR_END, "");
+        return item.split(ServiceConstants.ITEM_ELEMENT_SEPARATOR);
     }
 
     private void validateItemName(Products products, String name) {
         if (!products.existProductByName(name)) {
-            throw new IllegalArgumentException(Constants.ERROR_PRODUCT_NOT_FOUND);
+            throw new IllegalArgumentException(ServiceConstants.ERROR_PRODUCT_NOT_FOUND);
         }
     }
 
     private void validateItemQuantity(Products products, String name, int quantity) {
         if (!products.canBuy(name, quantity)) {
-            throw new IllegalArgumentException(Constants.ERROR_QUANTITY_OUT_OF_RANGE);
+            throw new IllegalArgumentException(ServiceConstants.ERROR_QUANTITY_OUT_OF_RANGE);
         }
     }
 
@@ -113,7 +113,7 @@ public class StoreService {
             discountByMembership = getMembershipDiscount(products, items);
         }
         int payment = totalPrice - discountByPromotion - discountByMembership;
-        return new Receipt(totalPrice, discountByPromotion, discountByMembership, payment);
+        return new Receipt(items, totalPrice, discountByPromotion, discountByMembership, payment);
     }
 
     private int getTotalPrice(Products products, List<Item> items) {
@@ -170,5 +170,21 @@ public class StoreService {
         int applyPromotion = product.getMaxCanApplyPromotion(item.getQuantity());
         int notApplyPromotionCount = item.getQuantity() - applyPromotion;
         return notApplyPromotionCount * price;
+    }
+
+    public List<Item> getItemsForFreeByPromotion(Products products, List<Item> items) {
+        List<Item> freeItems = new ArrayList<>();
+        for (Item item : items) {
+            Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
+            if (product == null) {
+                continue;
+            }
+            int get = product.getMaxCanGetForFreeByPromotion(item.getQuantity());
+            if (get == 0) {
+                continue;
+            }
+            freeItems.add(new Item(item.getName(), get));
+        }
+        return freeItems;
     }
 }

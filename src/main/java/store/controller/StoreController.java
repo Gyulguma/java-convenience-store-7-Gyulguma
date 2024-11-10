@@ -35,6 +35,7 @@ public class StoreController {
         List<Item> processedItems = processItemsByPromotion(products, items);
         boolean applyMembership = applyMembership();
         Receipt receipt = createReceipt(products, processedItems, applyMembership);
+        printReceipt(products, receipt);
     }
 
     private Products printProducts() {
@@ -81,5 +82,10 @@ public class StoreController {
 
     private Receipt createReceipt(Products products, List<Item> items, boolean applyMembership) {
         return this.storeService.createReceipt(products, items, applyMembership);
+    }
+
+    private void printReceipt(Products products, Receipt receipt) {
+        List<Item> freeItems = this.storeService.getItemsForFreeByPromotion(products, receipt.getItems());
+        this.outputView.printReceipt(products, receipt, freeItems);
     }
 }
