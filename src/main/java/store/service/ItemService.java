@@ -18,9 +18,22 @@ public class ItemService {
         String[] inputs = input.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
         List<Item> items = new ArrayList<>();
         for (String item : inputs) {
-            items.add(createItem(products, item));
+            Item newItem = createItem(products, item);
+            validateDuplicateItem(products, items, newItem);
+            items.add(newItem);
         }
         return items;
+    }
+
+    private void validateDuplicateItem(Products products, List<Item> items, Item newItem) {
+        for (Item item : items) {
+            if (item.equals(newItem)) {
+                String name = newItem.getName();
+                int quantity = item.getQuantity() + newItem.getQuantity();
+                validateItemQuantity(products, name, quantity);
+                return;
+            }
+        }
     }
 
     private Item createItem(Products products, String item) {

@@ -9,6 +9,10 @@ public class Item {
         this.quantity = quantity;
     }
 
+    public boolean equals(Item other) {
+        return this.name.equals(other.name);
+    }
+
     public String getName() {
         return name;
     }
