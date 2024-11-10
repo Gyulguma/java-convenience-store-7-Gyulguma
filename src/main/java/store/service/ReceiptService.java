@@ -6,6 +6,7 @@ import store.model.Item;
 import store.model.Product;
 import store.model.Products;
 import store.model.Receipt;
+import store.util.constants.ServiceConstants;
 
 public class ReceiptService {
     public ReceiptService() {
@@ -59,9 +60,9 @@ public class ReceiptService {
         for (Item item : items) {
             totalPriceNotApplyPromotion += getPriceNotApplyPromotion(products, item);
         }
-        int discount = (int) (totalPriceNotApplyPromotion * 0.3);
-        if (discount > 8000) {
-            discount = 8000;
+        int discount = (int) (totalPriceNotApplyPromotion * ServiceConstants.MEMBERSHIP_DISCOUNT_RATE);
+        if (discount > ServiceConstants.MEMBERSHIP_DISCOUNT_LIMIT) {
+            discount = ServiceConstants.MEMBERSHIP_DISCOUNT_LIMIT;
         }
         return discount;
     }

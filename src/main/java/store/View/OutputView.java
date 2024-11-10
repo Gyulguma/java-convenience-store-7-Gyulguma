@@ -7,7 +7,7 @@ import store.model.Item;
 import store.model.Product;
 import store.model.Products;
 import store.model.Receipt;
-import store.util.ViewConstants;
+import store.util.constants.ViewConstants;
 
 public class OutputView {
     public void printExceptionMessage(String message) {

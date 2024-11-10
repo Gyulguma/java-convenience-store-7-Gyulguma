@@ -5,7 +5,7 @@ import java.util.List;
 import store.model.Item;
 import store.model.Products;
 import store.util.Converter;
-import store.util.ServiceConstants;
+import store.util.constants.ServiceConstants;
 
 public class ItemService {
     private final Converter converter;

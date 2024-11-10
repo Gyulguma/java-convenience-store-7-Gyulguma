@@ -13,6 +13,7 @@ import store.service.FileService;
 import store.service.ItemService;
 import store.service.ReceiptService;
 import store.service.StoreService;
+import store.util.constants.ServiceConstants;
 
 public class StoreController {
     private static final String PRODUCTS_FILE_PATH = "/products.md";
@@ -99,7 +100,7 @@ public class StoreController {
 
     private boolean applyMembership() {
         String input = this.inputView.readMembershipYN();
-        return input.equals("Y");
+        return input.equals(ServiceConstants.YES);
     }
 
     private Receipt createReceipt(Products products, List<Item> items, boolean applyMembership) {

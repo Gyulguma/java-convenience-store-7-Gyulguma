@@ -7,6 +7,7 @@ import store.model.Item;
 import store.model.Product;
 import store.model.Products;
 import store.model.PromotionApplyStatus;
+import store.util.constants.ServiceConstants;
 
 public class StoreService {
 
@@ -42,11 +43,11 @@ public class StoreService {
 
     public void processQuantityByPromotion(Item item, PromotionApplyStatus promotionApplyStatus, String input,
                                            Products products) {
-        if (promotionApplyStatus == PromotionApplyStatus.NEED_GET && input.equals("Y")) {
+        if (promotionApplyStatus == PromotionApplyStatus.NEED_GET && input.equals(ServiceConstants.YES)) {
             addGetToItem(item, products);
             return;
         }
-        if (promotionApplyStatus == PromotionApplyStatus.NOT_ENOUGH_STOCK && input.equals("N")) {
+        if (promotionApplyStatus == PromotionApplyStatus.NOT_ENOUGH_STOCK && input.equals(ServiceConstants.NO)) {
             takeOffFormItem(item, products);
             return;
         }
@@ -106,6 +107,6 @@ public class StoreService {
     }
 
     public boolean isContinue(String input) {
-        return input.equals("Y");
+        return input.equals(ServiceConstants.YES);
     }
 }

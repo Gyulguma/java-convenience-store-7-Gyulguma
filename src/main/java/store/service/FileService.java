@@ -10,6 +10,7 @@ import store.model.Promotion;
 import store.model.Promotions;
 import store.util.Converter;
 import store.util.FileReader;
+import store.util.constants.ServiceConstants;
 
 public class FileService {
     private final FileReader fileReader;
@@ -25,7 +26,7 @@ public class FileService {
         List<Promotion> promotions = new ArrayList<>();
         for (int i = 1; i < fileLines.size(); i++) {
             String line = fileLines.get(i);
-            String[] promotionLine = line.split(",");
+            String[] promotionLine = line.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
             Promotion promotion = createPromotion(promotionLine);
             promotions.add(promotion);
         }
@@ -46,7 +47,7 @@ public class FileService {
         List<Product> products = new ArrayList<>();
         for (int i = 1; i < fileLines.size(); i++) {
             String line = fileLines.get(i);
-            String[] productLine = line.split(",");
+            String[] productLine = line.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
             Product product = createProduct(productLine, promotions);
             products.add(product);
         }
