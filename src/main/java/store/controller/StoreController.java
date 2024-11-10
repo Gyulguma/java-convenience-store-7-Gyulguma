@@ -13,7 +13,7 @@ import store.service.FileService;
 import store.service.StoreService;
 
 public class StoreController {
-    private static final String PRODUCTS_FILE_PATH = "/products.md";
+    private static final String PRODUCTS_FILE_PATH = "/prodsucts.md";
     private static final String PROMOTIONS_FILE_PATH = "/promotions.md";
 
     private final InputView inputView;
@@ -31,6 +31,9 @@ public class StoreController {
 
     public void run() {
         Products products = createProducts();
+        if (products == null) {
+            return;
+        }
         boolean operate = true;
         while (operate) {
             operate = operate(products);
