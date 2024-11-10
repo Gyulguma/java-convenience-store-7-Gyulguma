@@ -110,4 +110,8 @@ public class Product {
     public boolean InStock() {
         return quantity > 0;
     }
+
+    public void decreaseQuantity(int amount) {
+        quantity -= amount;
+    }
 }

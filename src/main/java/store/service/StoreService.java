@@ -187,4 +187,25 @@ public class StoreService {
         }
         return freeItems;
     }
+
+    public void processStock(Products products, List<Item> items) {
+        for (Item item : items) {
+            Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
+            int quantity = item.getQuantity();
+            if (product != null) {
+                quantity = decreaseProductQuantity(product, quantity);
+            }
+            product = products.findProductByNameAndPromotionIsNull(item.getName());
+            product.decreaseQuantity(quantity);
+        }
+    }
+
+    private int decreaseProductQuantity(Product product, int quantity) {
+        if (product.canBuy(quantity)) {
+            product.decreaseQuantity(quantity);
+            return 0;
+        }
+        product.decreaseQuantity(product.getQuantity());
+        return quantity - product.getQuantity();
+    }
 }
