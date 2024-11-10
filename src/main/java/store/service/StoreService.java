@@ -84,17 +84,26 @@ public class StoreService {
 
     public void processStock(Products products, List<Item> items) {
         for (Item item : items) {
-            Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
-            int quantity = item.getQuantity();
-            if (product != null) {
-                quantity = decreaseProductQuantity(product, quantity);
-            }
-            product = products.findProductByNameAndPromotionIsNull(item.getName());
-            if (quantity == 0 || product == null) {
-                continue;
-            }
-            product.decreaseQuantity(quantity);
+            int quantity = processPromotionProduct(products, item);
+            processNotPromotionProduct(products, item, quantity);
         }
+    }
+
+    private int processPromotionProduct(Products products, Item item) {
+        Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
+        int quantity = item.getQuantity();
+        if (product != null) {
+            quantity = decreaseProductQuantity(product, quantity);
+        }
+        return quantity;
+    }
+
+    private void processNotPromotionProduct(Products products, Item item, int quantity) {
+        Product product = products.findProductByNameAndPromotionIsNull(item.getName());
+        if (quantity == 0 || product == null) {
+            return;
+        }
+        product.decreaseQuantity(quantity);
     }
 
     private int decreaseProductQuantity(Product product, int quantity) {
