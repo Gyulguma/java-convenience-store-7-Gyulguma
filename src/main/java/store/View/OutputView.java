@@ -48,6 +48,9 @@ public class OutputView {
     }
 
     private void printReceiptMiddle(List<Item> freeItems) {
+        if (freeItems.isEmpty()) {
+            return;
+        }
         System.out.println(ViewConstants.RECEIPT_MIDDLE);
         for (Item item : freeItems) {
             System.out.printf((ViewConstants.RECEIPT_FORMAT) + "%n", item.getName(), item.getQuantity(), "");

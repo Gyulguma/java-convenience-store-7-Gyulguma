@@ -7,6 +7,7 @@ public class InputView {
     private static final String ITEM_INPUT_FORMAT = "^\\[(\\w|[가-힣])+-\\d+\\](,\\[(\\w|[가-힣])+-\\d+\\])*$";
     private static final String ERROR_INPUT_FORMAT = "[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.";
     private static final String INPUT_MEMBERSHIP_YN_MESSAGE = "\n멤버십 할인을 받으시겠습니까? (Y/N)";
+    private static final String INPUT_CONTINUE_YN_MESSAGE = "감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)";
 
     public String readItem() {
         System.out.println(INPUT_ITEM_MESSAGE);
@@ -42,5 +43,9 @@ public class InputView {
         if (!input.equals("Y") && !input.equals("N")) {
             throw new IllegalArgumentException(ERROR_INPUT_FORMAT);
         }
+    }
+
+    public String readContinue() {
+        return readYN(INPUT_CONTINUE_YN_MESSAGE);
     }
 }

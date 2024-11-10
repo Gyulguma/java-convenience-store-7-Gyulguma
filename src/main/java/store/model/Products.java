@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Products {
+    private static final String PRODUCT_MARK_HEADER = "- ";
     private final List<Product> products;
 
     public Products(List<Product> products) {
@@ -14,7 +15,7 @@ public class Products {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Product product : products) {
-            stringBuilder.append(product.toString());
+            stringBuilder.append(PRODUCT_MARK_HEADER).append(product.toString());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();

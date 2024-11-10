@@ -196,6 +196,9 @@ public class StoreService {
                 quantity = decreaseProductQuantity(product, quantity);
             }
             product = products.findProductByNameAndPromotionIsNull(item.getName());
+            if (quantity == 0 || product == null) {
+                continue;
+            }
             product.decreaseQuantity(quantity);
         }
     }
@@ -207,5 +210,9 @@ public class StoreService {
         }
         product.decreaseQuantity(product.getQuantity());
         return quantity - product.getQuantity();
+    }
+
+    public boolean isContinue(String input) {
+        return input.equals("Y");
     }
 }

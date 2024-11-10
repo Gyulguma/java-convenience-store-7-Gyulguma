@@ -30,26 +30,43 @@ public class StoreController {
     }
 
     public void run() {
-        Products products = printProducts();
+        Products products = createProducts();
+        boolean operate = true;
+        while (operate) {
+            operate = operate(products);
+        }
+    }
+
+    private boolean operate(Products products) {
+        printProducts(products);
         List<Item> items = createItem(products);
         List<Item> processedItems = processItemsByPromotion(products, items);
         boolean applyMembership = applyMembership();
         Receipt receipt = createReceipt(products, processedItems, applyMembership);
         printReceipt(products, receipt);
         processStock(products, processedItems);
+        return isContinue();
     }
 
-    private Products printProducts() {
-        Promotions promotions = null;
+    private boolean isContinue() {
+        String input = this.inputView.readContinue();
+        return this.storeService.isContinue(input);
+    }
+
+    private Products createProducts() {
+        Promotions promotions;
         Products products = null;
         try {
             promotions = this.fileService.getPromotions(PROMOTIONS_FILE_PATH);
             products = this.fileService.getProducts(PRODUCTS_FILE_PATH, promotions);
-            this.outputView.printProducts(products);
         } catch (FileNotFoundException | IllegalArgumentException e) {
             this.outputView.printExceptionMessage(e.getMessage());
         }
         return products;
+    }
+
+    private void printProducts(Products products) {
+        this.outputView.printProducts(products);
     }
 
     private List<Item> createItem(Products products) {
