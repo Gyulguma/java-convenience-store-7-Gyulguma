@@ -39,7 +39,7 @@ public class OutputView {
         List<Item> items = receipt.getItems();
         for (Item item : items) {
             Product product = products.findProductByName(item.getName());
-            int price = product.getPrice();
+            int price = product.getPrice() * item.getQuantity();
             System.out.printf((ViewConstants.RECEIPT_FORMAT) + "%n", item.getName(), item.getQuantity(),
                     formatCurrency(price));
             totalQuantity += item.getQuantity();
