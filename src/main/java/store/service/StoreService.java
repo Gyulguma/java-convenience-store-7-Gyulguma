@@ -16,7 +16,7 @@ public class StoreService {
 
     public PromotionApplyStatus checkPromotionState(Products products, Item item) {
         Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
-        if (product == null || !product.InStock() || !product.isApplyPromotion(DateTimes.now())) {
+        if (product == null || !product.inStock() || !product.isApplyPromotion(DateTimes.now())) {
             return PromotionApplyStatus.NO_PROMOTION;
         }
         if (product.canGetForFreeByPromotion(item.getQuantity())) {

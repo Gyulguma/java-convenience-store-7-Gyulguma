@@ -107,7 +107,7 @@ public class Product {
         return this.promotion.getMaxCanApply(quantity);
     }
 
-    public boolean InStock() {
+    public boolean inStock() {
         return quantity > 0;
     }
 
