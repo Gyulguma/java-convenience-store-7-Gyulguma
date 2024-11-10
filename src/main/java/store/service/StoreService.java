@@ -6,7 +6,7 @@ import java.util.List;
 import store.model.Item;
 import store.model.Product;
 import store.model.Products;
-import store.model.PromotionStatus;
+import store.model.PromotionApplyStatus;
 import store.model.Receipt;
 import store.util.Converter;
 import store.util.ServiceConstants;
@@ -54,39 +54,40 @@ public class StoreService {
         }
     }
 
-    public PromotionStatus checkPromotionState(Products products, Item item) {
+    public PromotionApplyStatus checkPromotionState(Products products, Item item) {
         Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
         if (product == null || !product.InStock() || !product.isApplyPromotion(DateTimes.now())) {
-            return PromotionStatus.NO_PROMOTION;
+            return PromotionApplyStatus.NO_PROMOTION;
         }
         if (product.canGetForFreeByPromotion(item.getQuantity())) {
-            return PromotionStatus.NEED_GET;
+            return PromotionApplyStatus.NEED_GET;
         }
         if (!product.canBuy(item.getQuantity()) || !product.canBuy(item.getQuantity() + product.getPromotionGet())) {
-            return PromotionStatus.NOT_ENOUGH_STOCK;
+            return PromotionApplyStatus.NOT_ENOUGH_STOCK;
         }
-        return PromotionStatus.NO_PROMOTION;
+        return PromotionApplyStatus.NO_PROMOTION;
     }
 
-    public String getPromotionMessage(Products products, Item item, PromotionStatus promotionStatus) {
+    public String getPromotionMessage(Products products, Item item, PromotionApplyStatus promotionApplyStatus) {
         Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
-        if (promotionStatus == PromotionStatus.NOT_ENOUGH_STOCK) {
+        if (promotionApplyStatus == PromotionApplyStatus.NOT_ENOUGH_STOCK) {
             int applyPromotion = product.getMaxCanApplyPromotion(item.getQuantity());
             int notApplyPromotionCount = item.getQuantity() - applyPromotion;
-            return String.format(promotionStatus.getMessage(), item.getName(), notApplyPromotionCount);
+            return String.format(promotionApplyStatus.getMessage(), item.getName(), notApplyPromotionCount);
         }
-        if (promotionStatus == PromotionStatus.NEED_GET) {
-            return String.format(promotionStatus.getMessage(), item.getName());
+        if (promotionApplyStatus == PromotionApplyStatus.NEED_GET) {
+            return String.format(promotionApplyStatus.getMessage(), item.getName());
         }
-        return promotionStatus.getMessage();
+        return promotionApplyStatus.getMessage();
     }
 
-    public void processItemByPromotion(Item item, PromotionStatus promotionStatus, String input, Products products) {
-        if (promotionStatus == PromotionStatus.NEED_GET && input.equals("Y")) {
+    public void processQuantityByPromotion(Item item, PromotionApplyStatus promotionApplyStatus, String input,
+                                           Products products) {
+        if (promotionApplyStatus == PromotionApplyStatus.NEED_GET && input.equals("Y")) {
             addGetToItem(item, products);
             return;
         }
-        if (promotionStatus == PromotionStatus.NOT_ENOUGH_STOCK && input.equals("N")) {
+        if (promotionApplyStatus == PromotionApplyStatus.NOT_ENOUGH_STOCK && input.equals("N")) {
             takeOffFormItem(item, products);
             return;
         }

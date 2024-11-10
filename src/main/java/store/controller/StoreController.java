@@ -6,7 +6,7 @@ import store.View.InputView;
 import store.View.OutputView;
 import store.model.Item;
 import store.model.Products;
-import store.model.PromotionStatus;
+import store.model.PromotionApplyStatus;
 import store.model.Promotions;
 import store.model.Receipt;
 import store.service.FileService;
@@ -51,11 +51,6 @@ public class StoreController {
         return isContinue();
     }
 
-    private boolean isContinue() {
-        String input = this.inputView.readContinue();
-        return this.storeService.isContinue(input);
-    }
-
     private Products createProducts() {
         Promotions promotions;
         Products products = null;
@@ -85,13 +80,13 @@ public class StoreController {
 
     private List<Item> processItemsByPromotion(Products products, List<Item> items) {
         for (Item item : items) {
-            PromotionStatus promotionStatus = this.storeService.checkPromotionState(products, item);
-            if (promotionStatus == PromotionStatus.NO_PROMOTION) {
+            PromotionApplyStatus promotionApplyStatus = this.storeService.checkPromotionState(products, item);
+            if (promotionApplyStatus == PromotionApplyStatus.NO_PROMOTION) {
                 continue;
             }
-            String promotionsMessage = this.storeService.getPromotionMessage(products, item, promotionStatus);
+            String promotionsMessage = this.storeService.getPromotionMessage(products, item, promotionApplyStatus);
             String input = this.inputView.readYN(promotionsMessage);
-            this.storeService.processItemByPromotion(item, promotionStatus, input, products);
+            this.storeService.processQuantityByPromotion(item, promotionApplyStatus, input, products);
         }
         return items;
     }
@@ -112,5 +107,10 @@ public class StoreController {
 
     private void processStock(Products products, List<Item> items) {
         this.storeService.processStock(products, items);
+    }
+
+    private boolean isContinue() {
+        String input = this.inputView.readContinue();
+        return this.storeService.isContinue(input);
     }
 }
