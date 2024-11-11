@@ -66,6 +66,9 @@ public class ItemService {
     }
 
     private void validateItemQuantity(Products products, String name, int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException(ServiceConstants.ERROR_QUANTITY);
+        }
         if (!products.canBuy(name, quantity)) {
             throw new IllegalArgumentException(ServiceConstants.ERROR_QUANTITY_OUT_OF_RANGE);
         }
