@@ -17,18 +17,6 @@ public class Promotion {
         this.endDate = endDate;
     }
 
-    public boolean matchName(String name) {
-        return name.equals(this.name);
-    }
-
-    public boolean isApplyPromotion(LocalDateTime localDateTime) {
-        return !localDateTime.isBefore(startDate) && !localDateTime.isAfter(endDate);
-    }
-
-    public boolean canGetForFree(int quantity) {
-        return quantity % (buy + get) == buy;
-    }
-
     public String getName() {
         return name;
     }
@@ -39,6 +27,18 @@ public class Promotion {
 
     public int getGet() {
         return get;
+    }
+
+    public boolean matchName(String name) {
+        return name.equals(this.name);
+    }
+
+    public boolean isApplyPromotion(LocalDateTime localDateTime) {
+        return !localDateTime.isBefore(startDate) && !localDateTime.isAfter(endDate);
+    }
+
+    public boolean canGetForFree(int quantity) {
+        return quantity % (buy + get) == buy;
     }
 
     public int getMaxCanGetForFree(int quantity) {

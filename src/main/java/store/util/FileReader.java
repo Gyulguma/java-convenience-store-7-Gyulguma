@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class SFileReader {
+public class FileReader {
     private static final String ERROR_FILE_NOT_FOUND = "[ERROR] '%s' 파일을 찾을 수 없습니다.";
 
-    public SFileReader() {
+    public FileReader() {
     }
 
     public List<String> readFile(String filePath) throws FileNotFoundException {

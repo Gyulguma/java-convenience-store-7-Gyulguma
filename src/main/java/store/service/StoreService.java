@@ -49,7 +49,6 @@ public class StoreService {
         }
         if (promotionApplyStatus == PromotionApplyStatus.NOT_ENOUGH_STOCK && input.equals(ServiceConstants.NO)) {
             takeOffFormItem(item, products);
-            return;
         }
     }
 
@@ -69,17 +68,21 @@ public class StoreService {
     public List<Item> getItemsForFreeByPromotion(Products products, List<Item> items) {
         List<Item> freeItems = new ArrayList<>();
         for (Item item : items) {
-            Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
-            if (product == null || !product.isApplyPromotion(DateTimes.now())) {
+            int getForFree = getGetCountByPromotion(products, item);
+            if (getForFree == 0) {
                 continue;
             }
-            int get = product.getMaxCanGetForFreeByPromotion(item.getQuantity());
-            if (get == 0) {
-                continue;
-            }
-            freeItems.add(new Item(item.getName(), get));
+            freeItems.add(new Item(item.getName(), getForFree));
         }
         return freeItems;
+    }
+
+    private int getGetCountByPromotion(Products products, Item item) {
+        Product product = products.findProductByNameAndPromotionIsNotNull(item.getName());
+        if (product == null || !product.isApplyPromotion(DateTimes.now())) {
+            return 0;
+        }
+        return product.getMaxCanGetForFreeByPromotion(item.getQuantity());
     }
 
     public void processStock(Products products, List<Item> items) {

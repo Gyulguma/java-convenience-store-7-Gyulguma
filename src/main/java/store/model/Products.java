@@ -16,16 +16,6 @@ public class Products {
         return Collections.unmodifiableList(products);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Product product : products) {
-            stringBuilder.append(PRODUCT_MARK_HEADER).append(product.toString());
-            stringBuilder.append("\n");
-        }
-        return stringBuilder.toString();
-    }
-
     public Products findAllProductByName(String name) {
         List<Product> foundProducts = new ArrayList<>();
         for (Product product : products) {
@@ -45,14 +35,6 @@ public class Products {
         return false;
     }
 
-    public boolean canBuy(String name, int quantity) {
-        Products foundProducts = findAllProductByName(name);
-        int totalStock = 0;
-        for (Product product : foundProducts.products) {
-            totalStock += product.getQuantity();
-        }
-        return totalStock >= quantity;
-    }
 
     public Product findProductByNameAndPromotionIsNotNull(String name) {
         Products foundProducts = findAllProductByName(name);
@@ -81,5 +63,24 @@ public class Products {
             }
         }
         return null;
+    }
+
+    public boolean canBuy(String name, int quantity) {
+        Products foundProducts = findAllProductByName(name);
+        int totalStock = 0;
+        for (Product product : foundProducts.products) {
+            totalStock += product.getQuantity();
+        }
+        return totalStock >= quantity;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Product product : products) {
+            stringBuilder.append(PRODUCT_MARK_HEADER).append(product.toString());
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 }

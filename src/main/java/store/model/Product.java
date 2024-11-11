@@ -25,31 +25,6 @@ public class Product {
         return name;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(name).append(" ");
-        sb.append(formatCurrency(price)).append(" ");
-        String stock = String.format(STOCK_UNIT, quantity);
-        if (quantity == 0) {
-            stock = OUT_OF_STOCK;
-        }
-        sb.append(stock).append(" ");
-        if (promotion != null) {
-            sb.append(promotion.getName());
-        }
-        return sb.toString();
-    }
-
-    private String formatCurrency(int price) {
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
-        return numberFormat.format(price) + PRICE_UNIT;
-    }
-
-    public boolean matchName(String name) {
-        return this.name.equals(name);
-    }
-
     public int getPrice() {
         return price;
     }
@@ -58,12 +33,35 @@ public class Product {
         return quantity;
     }
 
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public int getPromotionGet() {
+        if (promotion == null) {
+            return 0;
+        }
+        return this.promotion.getGet();
+    }
+
     public boolean isPromotion() {
         return promotion != null;
     }
 
-    public Promotion getPromotion() {
-        return promotion;
+    public boolean matchName(String name) {
+        return this.name.equals(name);
+    }
+
+    public boolean inStock() {
+        return quantity > 0;
+    }
+
+    public boolean canBuy(int quantity) {
+        return this.quantity >= quantity;
+    }
+
+    public void decreaseQuantity(int amount) {
+        quantity -= amount;
     }
 
     public boolean isApplyPromotion(LocalDateTime localDateTime) {
@@ -71,10 +69,6 @@ public class Product {
             return false;
         }
         return promotion.isApplyPromotion(localDateTime);
-    }
-
-    public boolean canBuy(int quantity) {
-        return this.quantity >= quantity;
     }
 
     public boolean canGetForFreeByPromotion(int quantity) {
@@ -94,13 +88,6 @@ public class Product {
         return this.promotion.getMaxCanGetForFree(quantity);
     }
 
-    public int getPromotionGet() {
-        if (promotion == null) {
-            return 0;
-        }
-        return this.promotion.getGet();
-    }
-
     public int getMaxCanApplyPromotion(int quantity) {
         if (promotion == null) {
             return 0;
@@ -111,11 +98,24 @@ public class Product {
         return this.promotion.getMaxCanApply(quantity);
     }
 
-    public boolean inStock() {
-        return quantity > 0;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name).append(" ");
+        sb.append(formatCurrency(price)).append(" ");
+        String stock = String.format(STOCK_UNIT, quantity);
+        if (quantity == 0) {
+            stock = OUT_OF_STOCK;
+        }
+        sb.append(stock).append(" ");
+        if (promotion != null) {
+            sb.append(promotion.getName());
+        }
+        return sb.toString();
     }
 
-    public void decreaseQuantity(int amount) {
-        quantity -= amount;
+    private String formatCurrency(int price) {
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.KOREA);
+        return numberFormat.format(price) + PRICE_UNIT;
     }
 }

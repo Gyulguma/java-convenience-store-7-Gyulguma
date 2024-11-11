@@ -9,16 +9,15 @@ import store.model.Products;
 import store.model.Promotion;
 import store.model.Promotions;
 import store.util.Converter;
-import store.util.SFileReader;
+import store.util.FileReader;
 import store.util.constants.ServiceConstants;
 
 public class FileService {
-
-    private final SFileReader fileReader;
+    private final FileReader fileReader;
     private final Converter converter;
 
     public FileService(Converter converter) {
-        this.fileReader = new SFileReader();
+        this.fileReader = new FileReader();
         this.converter = converter;
     }
 
