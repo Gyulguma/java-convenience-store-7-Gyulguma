@@ -50,17 +50,20 @@ public class FileService {
             String line = fileLines.get(i);
             String[] productLine = line.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
             Product product = createProduct(productLine, promotions);
-
-            if (preProduct != null && !preProduct.getName().equals(product.getName())
-                    && preProduct.getPromotion() != null) {
-                Product newProduct =
-                        new Product(preProduct.getName(), preProduct.getPrice(), 0, null);
-                products.add(newProduct);
-            }
+            checkAddProduct(products, preProduct, product);
             products.add(product);
             preProduct = product;
         }
         return new Products(products);
+    }
+
+    private void checkAddProduct(List<Product> products, Product preProduct, Product product) {
+        if (preProduct != null && !preProduct.getName().equals(product.getName())
+                && preProduct.getPromotion() != null) {
+            Product newProduct =
+                    new Product(preProduct.getName(), preProduct.getPrice(), 0, null);
+            products.add(newProduct);
+        }
     }
 
     private Product createProduct(String[] productLine, Promotions promotions) {
