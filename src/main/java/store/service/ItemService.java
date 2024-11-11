@@ -19,21 +19,29 @@ public class ItemService {
         List<Item> items = new ArrayList<>();
         for (String item : inputs) {
             Item newItem = createItem(products, item);
-            validateDuplicateItem(products, items, newItem);
+            if (checkDuplicateItem(products, items, newItem)) {
+                continue;
+            }
             items.add(newItem);
         }
         return items;
     }
 
-    private void validateDuplicateItem(Products products, List<Item> items, Item newItem) {
+    private boolean checkDuplicateItem(Products products, List<Item> items, Item newItem) {
         for (Item item : items) {
             if (item.equals(newItem)) {
-                String name = newItem.getName();
-                int quantity = item.getQuantity() + newItem.getQuantity();
-                validateItemQuantity(products, name, quantity);
-                return;
+                validateCombineQuantity(products, item, newItem);
+                item.addQuantity(newItem.getQuantity());
+                return true;
             }
         }
+        return false;
+    }
+
+    private void validateCombineQuantity(Products products, Item item, Item newItem) {
+        String name = newItem.getName();
+        int quantity = item.getQuantity() + newItem.getQuantity();
+        validateItemQuantity(products, name, quantity);
     }
 
     private Item createItem(Products products, String item) {
