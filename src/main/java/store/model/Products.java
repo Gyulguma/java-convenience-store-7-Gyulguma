@@ -1,6 +1,7 @@
 package store.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Products {
@@ -9,6 +10,10 @@ public class Products {
 
     public Products(List<Product> products) {
         this.products = new ArrayList<>(products);
+    }
+
+    public List<Product> getProducts() {
+        return Collections.unmodifiableList(products);
     }
 
     @Override
