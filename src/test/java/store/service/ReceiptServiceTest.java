@@ -57,10 +57,10 @@ class ReceiptServiceTest {
     void createReceipt() {
         Receipt receipt = this.receiptService.createReceipt(products, items, true);
 
-        int total = 1000 * 2 + 1200 * 4 + 1200 * 10;
+        int total = 1000 * 2 + 1200 * 4 + 1200 * 10;//18800
         assertThat(receipt.getTotalPrice()).isEqualTo(total);
-        int discountPromotion = 1200 + 1200 * 2;
-        int discountMembership = (int) ((2000 + 1200 + 4800) * 0.3);
+        int discountPromotion = 1200 + 1200 * 2;//3600
+        int discountMembership = (int) ((2000 + 1200 + 2400) * 0.3);//1680
         int payment = total - discountPromotion - discountMembership;
         assertThat(receipt.getPayment()).isEqualTo(payment);
     }
@@ -76,7 +76,7 @@ class ReceiptServiceTest {
     @DisplayName("프로모션 적용 상품 제외한 금액에서 멤버십 할인 금액을 반환한다")
     @Test
     void getMembershipDiscount() {
-        int discountMembership = (int) ((2000 + 1200 + 4800) * 0.3);
+        int discountMembership = (int) ((2000 + 1200 + 2400) * 0.3);
 
         assertThat(this.receiptService.getMembershipDiscount(products, items)).isEqualTo(discountMembership);
     }
