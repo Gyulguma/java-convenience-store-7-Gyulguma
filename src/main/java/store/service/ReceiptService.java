@@ -74,7 +74,8 @@ public class ReceiptService {
             return item.getQuantity() * product.getPrice();
         }
         int price = product.getPrice();
-        int applyPromotion = product.getMaxCanApplyPromotion(item.getQuantity());
+        int applyPromotion = product.getMaxCanGetForFreeByPromotion(item.getQuantity()) * (product.getPromotionGet()+product.getPromotion()
+                .getBuy());
         int notApplyPromotionCount = item.getQuantity() - applyPromotion;
         return notApplyPromotionCount * price;
     }
