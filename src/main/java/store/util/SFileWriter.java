@@ -1,5 +1,6 @@
 package store.util;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -18,12 +19,12 @@ public class SFileWriter {
         if (!file.exists()) {
             throw new FileNotFoundException(String.format(ERROR_FILE_NOT_FOUND, filePath));
         }
-        try {
-            FileWriter fileWriter = new FileWriter(file, false);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
             for (String line : lines) {
-                fileWriter.write(line);
+                writer.write(line);
+                writer.newLine();
             }
-            fileWriter.close();
+            writer.flush();
         } catch (IOException e) {
             throw new IllegalStateException(ERROR_FILE_EDIT);
         }

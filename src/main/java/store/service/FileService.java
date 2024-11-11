@@ -71,10 +71,10 @@ public class FileService {
 
     public void modifyProduct(Products products, String filePath) throws FileNotFoundException {
         List<String> lines = new ArrayList<>();
-        lines.add(PRODUCT_FILE_HEADER + "\n");
+        lines.add(PRODUCT_FILE_HEADER);
         for (Product product : products.getProducts()) {
             String productLine = createProductLine(product);
-            lines.add(productLine + "\n");
+            lines.add(productLine);
         }
         this.fileWriter.writeFile(filePath, lines);
     }
