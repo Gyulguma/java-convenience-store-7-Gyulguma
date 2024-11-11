@@ -105,13 +105,6 @@ public class Product {
         if (promotion == null) {
             return 0;
         }
-        if(this.promotion.canGetForFree(this.quantity) && quantity > this.quantity) {
-            int result = this.promotion.getMaxCanApply(quantity);
-            if (result > this.quantity) {
-                result = this.quantity;
-            }
-            return result;
-        }
         if (quantity > this.quantity) {
             quantity = this.quantity;
         }

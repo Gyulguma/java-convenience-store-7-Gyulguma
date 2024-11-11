@@ -114,11 +114,6 @@ public class StoreController {
 
     private void processStock(Products products, List<Item> items) {
         this.storeService.processStock(products, items);
-//        try {
-//            this.fileService.modifyProduct(products, PRODUCTS_FILE_PATH);
-//        } catch (FileNotFoundException | IllegalStateException e) {
-//            this.outputView.printExceptionMessage(e.getMessage());
-//        }
     }
 
     private boolean isContinue() {

@@ -10,20 +10,15 @@ import store.model.Promotion;
 import store.model.Promotions;
 import store.util.Converter;
 import store.util.SFileReader;
-import store.util.SFileWriter;
 import store.util.constants.ServiceConstants;
 
 public class FileService {
-    private static final String PRODUCT_FILE_HEADER = "name,price,quantity,promotion";
-    private static final String PRODUCT_FILE_ELEMENT_DELIMITER = ",";
 
     private final SFileReader fileReader;
-    private final SFileWriter fileWriter;
     private final Converter converter;
 
     public FileService(Converter converter) {
         this.fileReader = new SFileReader();
-        this.fileWriter = new SFileWriter();
         this.converter = converter;
     }
 
@@ -66,27 +61,5 @@ public class FileService {
         int quantity = this.converter.toInteger(productLine[2]);
         Promotion promotion = promotions.findPromotionByName(productLine[3]);
         return new Product(productName, productPrice, quantity, promotion);
-    }
-
-
-    public void modifyProduct(Products products, String filePath) throws FileNotFoundException {
-        List<String> lines = new ArrayList<>();
-        lines.add(PRODUCT_FILE_HEADER);
-        for (Product product : products.getProducts()) {
-            String productLine = createProductLine(product);
-            lines.add(productLine);
-        }
-        this.fileWriter.writeFile(filePath, lines);
-    }
-
-    private String createProductLine(Product product) {
-        String promotion = null;
-        if (product.getPromotion() != null) {
-            promotion = product.getPromotion().getName();
-        }
-        return product.getName() + PRODUCT_FILE_ELEMENT_DELIMITER
-                + product.getPrice() + PRODUCT_FILE_ELEMENT_DELIMITER
-                + product.getQuantity() + PRODUCT_FILE_ELEMENT_DELIMITER
-                + promotion;
     }
 }

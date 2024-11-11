@@ -68,7 +68,7 @@ class StoreServiceTest {
         assertThat(this.storeService.getPromotionMessage(products, items.get(0), PromotionApplyStatus.NEED_GET))
                 .contains("현재 콜라은(는) 1개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)");
         assertThat(this.storeService.getPromotionMessage(products, items.get(2), PromotionApplyStatus.NOT_ENOUGH_STOCK))
-                .contains("현재 사이다 2개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
+                .contains("현재 사이다 4개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)");
     }
 
     @DisplayName("프로모션 상태와 사용자 입력에 따라 item의 수량을 수정한다")
@@ -80,7 +80,7 @@ class StoreServiceTest {
 
         assertThat(items.get(0).getQuantity()).isEqualTo(3);
         assertThat(items.get(1).getQuantity()).isEqualTo(4);
-        assertThat(items.get(2).getQuantity()).isEqualTo(8);
+        assertThat(items.get(2).getQuantity()).isEqualTo(6);
     }
 
     @DisplayName("증정품 목록을 반환한다")
