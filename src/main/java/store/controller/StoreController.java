@@ -16,8 +16,8 @@ import store.service.StoreService;
 import store.util.constants.ServiceConstants;
 
 public class StoreController {
-    private static final String PRODUCTS_FILE_PATH = "/products.md";
-    private static final String PROMOTIONS_FILE_PATH = "/promotions.md";
+    private static final String PRODUCTS_FILE_PATH = "src/main/resources/products.md";
+    private static final String PROMOTIONS_FILE_PATH = "src/main/resources/promotions.md";
 
     private final InputView inputView;
     private final OutputView outputView;
@@ -114,6 +114,11 @@ public class StoreController {
 
     private void processStock(Products products, List<Item> items) {
         this.storeService.processStock(products, items);
+        try {
+            this.fileService.modifyProduct(products, PRODUCTS_FILE_PATH);
+        } catch (FileNotFoundException | IllegalStateException e) {
+            this.outputView.printExceptionMessage(e.getMessage());
+        }
     }
 
     private boolean isContinue() {
