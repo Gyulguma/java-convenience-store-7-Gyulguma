@@ -45,11 +45,20 @@ public class FileService {
     public Products getProducts(String filePath, Promotions promotions) throws FileNotFoundException {
         List<String> fileLines = fileReader.readFile(filePath);
         List<Product> products = new ArrayList<>();
+        Product preProduct = null;
         for (int i = 1; i < fileLines.size(); i++) {
             String line = fileLines.get(i);
             String[] productLine = line.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
             Product product = createProduct(productLine, promotions);
+
+            if (preProduct != null && !preProduct.getName().equals(product.getName())
+                    && preProduct.getPromotion() != null) {
+                Product newProduct =
+                        new Product(preProduct.getName(), preProduct.getPrice(), 0, null);
+                products.add(newProduct);
+            }
             products.add(product);
+            preProduct = product;
         }
         return new Products(products);
     }
