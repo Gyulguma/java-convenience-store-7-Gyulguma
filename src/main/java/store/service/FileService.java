@@ -47,9 +47,7 @@ public class FileService {
         List<Product> products = new ArrayList<>();
         Product preProduct = null;
         for (int i = 1; i < fileLines.size(); i++) {
-            String line = fileLines.get(i);
-            String[] productLine = line.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
-            Product product = createProduct(productLine, promotions);
+            Product product = createProduct(fileLines.get(i), promotions);
             checkAddProduct(products, preProduct, product);
             products.add(product);
             preProduct = product;
@@ -66,7 +64,8 @@ public class FileService {
         }
     }
 
-    private Product createProduct(String[] productLine, Promotions promotions) {
+    private Product createProduct(String line, Promotions promotions) {
+        String[] productLine = line.split(ServiceConstants.ITEM_GROUP_SEPARATOR);
         String productName = productLine[0];
         int productPrice = this.converter.toInteger(productLine[1]);
         int quantity = this.converter.toInteger(productLine[2]);
